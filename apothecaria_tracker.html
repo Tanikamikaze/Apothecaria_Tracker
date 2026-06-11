@@ -1830,7 +1830,7 @@
   <button class="tab-btn active" onclick="showTab('status')">🔮 Status</button>
   <button class="tab-btn" onclick="showTab('journal')">📖 Journal</button>
   <button class="tab-btn" onclick="showTab('patient')">🩹 Patient</button>
-  <button class="tab-btn" onclick="showTab('inventory')">🌿 Ingredients</button>
+  <button class="tab-btn" onclick="showTab('inventory')">🌿 Reagents</button>
   <button class="tab-btn" onclick="showTab('potions')">🧪 Potions</button>
   <button class="tab-btn" onclick="showTab('recipes')">📜 Recipes</button>
   <button class="tab-btn" onclick="showTab('forage')">🗺 Forage</button>
@@ -1953,7 +1953,7 @@
       <div class="status-card">
         <div class="sc-title">📦 Stock Summary</div>
         <div id="sc-stock-body">
-          <div class="sc-row"><span class="sc-row-label">Unique ingredients</span><span class="sc-row-val" id="sc-ing-count">0</span></div>
+          <div class="sc-row"><span class="sc-row-label">Unique reagents</span><span class="sc-row-val" id="sc-ing-count">0</span></div>
           <div class="sc-row"><span class="sc-row-label">Total quantity</span><span class="sc-row-val" id="sc-ing-qty">0</span></div>
           <div class="sc-row"><span class="sc-row-label">Potions in stock</span><span class="sc-row-val" id="sc-pot-count">0</span></div>
           <div class="sc-row"><span class="sc-row-label">Potions value</span><span class="sc-row-val" id="sc-pot-val">0s</span></div>
@@ -2224,7 +2224,7 @@
   <section class="tab-panel" id="tab-inventory">
     <div class="grid-2">
       <div class="panel">
-        <div class="panel-title"><span class="icon">🌿</span> Add Ingredient / Reagent</div>
+        <div class="panel-title"><span class="icon">🌿</span> Add Reagent / Reagent</div>
 
         <div class="form-row">
           <div class="form-group">
@@ -2284,19 +2284,19 @@
           <input type="text" id="ing-notes" placeholder="Seasonal modifiers, special properties…">
         </div>
 
-        <button class="btn btn-gold" onclick="addIngredient()">✦ Add to Stock</button>
+        <button class="btn btn-gold" onclick="addIngredient()">✦ Add to Reagent Stock</button>
       </div>
 
       <div class="panel">
         <div class="panel-title">
-          <span class="icon">📦</span> Ingredient Stock
+          <span class="icon">📦</span> Reagent Stock
           <span id="ing-count" style="margin-left:auto;font-size:0.72rem;color:var(--text-muted)">0 items</span>
         </div>
 
         <div class="filter-bar">
           <div class="filter-label">Filter by Trait Tag</div>
           <div class="tag-filters" id="ing-filter-tags">
-            <button class="tag-filter-btn active" onclick="filterIngredients('')">All</button>
+            <button class="tag-filter-btn active" onclick="filterReagents('')">All</button>
           </div>
           <div style="margin-top:8px;display:flex;gap:8px">
             <input type="text" id="ing-search" placeholder="Search name…" style="flex:1" oninput="renderIngredients()">
@@ -2310,7 +2310,7 @@
         </div>
 
         <ul id="ingredient-list" class="item-list">
-          <li class="empty-state">No ingredients in stock. Go foraging!</li>
+          <li class="empty-state">No reagents in stock yet. Go foraging!</li>
         </ul>
       </div>
     </div>
@@ -2338,8 +2338,8 @@
         </div>
 
         <div class="form-group">
-          <label>Ingredients Used (comma separated)</label>
-          <input type="text" id="pot-ingredients" placeholder="e.g. Old Blood, Wigfish Wig">
+          <label>Reagents Used (comma separated)</label>
+          <input type="text" id="pot-reagents" placeholder="e.g. Old Blood, Wigfish Wig">
         </div>
 
         <div class="form-group">
@@ -2404,7 +2404,7 @@
         <div class="panel-title"><span class="icon">🔍</span> Ailment Tag Filter</div>
 
         <p style="font-size:0.85rem;color:var(--text-dim);margin-bottom:12px;font-style:italic">
-          Enter the tags from your current ailment to find matching ingredients in your stock.
+          Enter the tags from your current ailment to find matching reagents in your stock.
         </p>
 
         <div class="form-group">
@@ -2418,7 +2418,7 @@
         </div>
 
         <div id="ailment-filter-results">
-          <div class="empty-state">Enter tags above to see matching ingredients.</div>
+          <div class="empty-state">Enter tags above to see matching reagents.</div>
         </div>
       </div>
 
@@ -2443,8 +2443,8 @@
           <input type="text" id="rec-name" placeholder="e.g. Hamster Hex Cure">
         </div>
         <div class="form-group">
-          <label>Ingredients</label>
-          <input type="text" id="rec-ingredients" placeholder="e.g. Old Blood + Wigfish Wig">
+          <label>Reagents</label>
+          <input type="text" id="rec-reagents" placeholder="e.g. Old Blood + Wigfish Wig">
         </div>
         <div class="form-group">
           <label>Tags Covered</label>
@@ -2963,7 +2963,7 @@
     <div class="comp-controls">
       <input type="text" id="comp-search" placeholder="🔍 Search name, tag, locale…" oninput="renderCompendium()">
       <select id="comp-mode" onchange="renderCompendium()">
-        <option value="reagents">Reagents / Ingredients</option>
+        <option value="ingredients">Reagents / Reagents</option>
         <option value="ailments">Ailments</option>
         <option value="potions">My Potions</option>
       </select>
@@ -3011,7 +3011,7 @@
   </div>
 </div>
 
-<!-- ── Hidden add-ingredient modal (invoked from filter) ── -->
+<!-- ── Hidden add-reagent modal (invoked from filter) ── -->
 <div id="modal-overlay" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeModal()">
   <div class="modal" id="modal-content"></div>
 </div>
@@ -3504,7 +3504,7 @@ function deleteTransaction(i) {
 // ════════════════════════════════════════════════════════
 function addIngredient() {
   const name = document.getElementById('ing-name').value.trim();
-  if (!name) { notify('Enter an ingredient name!'); return; }
+  if (!name) { notify('Enter an reagent name!'); return; }
   state.ingredients.push({
     id: Date.now(),
     name,
@@ -3527,7 +3527,7 @@ function addIngredient() {
   buildIngFilterTags();
   updateReagentRef();
   scheduleSave();
-  notify(name + ' added to stock ✓');
+  notify(name + ' added to reagent stock ✓');
 }
 function changeIngQty(id, delta) {
   const ing = state.ingredients.find(i => i.id === id);
@@ -3543,7 +3543,7 @@ function deleteIngredient(id) {
   updateReagentRef();
   scheduleSave();
 }
-function filterIngredients(tag) {
+function filterReagents(tag) {
   state.activeIngFilter = tag;
   document.querySelectorAll('.tag-filter-btn').forEach(b => {
     b.classList.toggle('active', b.getAttribute('onclick').includes(`'${tag}'`));
@@ -3569,7 +3569,7 @@ function renderIngredients() {
   document.getElementById('ing-count').textContent = state.ingredients.length + ' items';
 
   if (!items.length) {
-    ul.innerHTML = '<li class="empty-state">No matching ingredients.</li>';
+    ul.innerHTML = '<li class="empty-state">No matching reagents.</li>';
     return;
   }
   ul.innerHTML = items.map(ing => {
@@ -3611,12 +3611,12 @@ function buildIngFilterTags() {
   });
   const container = document.getElementById('ing-filter-tags');
   const active = state.activeIngFilter;
-  container.innerHTML = `<button class="tag-filter-btn ${active===''?'active':''}" onclick="filterIngredients('')">All</button>`;
+  container.innerHTML = `<button class="tag-filter-btn ${active===''?'active':''}" onclick="filterReagents('')">All</button>`;
   [...allTags].sort().forEach(tag => {
     const btn = document.createElement('button');
     btn.className = 'tag-filter-btn' + (active === tag ? ' active' : '');
     btn.textContent = tag;
-    btn.setAttribute('onclick', `filterIngredients('${tag}')`);
+    btn.setAttribute('onclick', `filterReagents('${tag}')`);
     container.appendChild(btn);
   });
 }
@@ -3650,7 +3650,7 @@ function addPotion() {
   state.potions.push({
     id: Date.now(),
     name,
-    ingredients: document.getElementById('pot-ingredients').value,
+    ingredients: document.getElementById('pot-reagents').value,
     ailment: document.getElementById('pot-ailment').value,
     tags: document.getElementById('pot-tags').value,
     poison, sweet,
@@ -3659,7 +3659,7 @@ function addPotion() {
     value: val,
     brewedAt: new Date().toLocaleDateString()
   });
-  ['pot-name','pot-ingredients','pot-ailment','pot-tags','pot-poison','pot-sweet','pot-qty','pot-method'].forEach(id => {
+  ['pot-name','pot-reagents','pot-ailment','pot-tags','pot-poison','pot-sweet','pot-qty','pot-method'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
@@ -3735,12 +3735,12 @@ function addRecipe() {
   state.recipes.push({
     id: Date.now(),
     name,
-    ingredients: document.getElementById('rec-ingredients').value,
+    ingredients: document.getElementById('rec-reagents').value,
     tags: document.getElementById('rec-tags').value,
     method: document.getElementById('rec-method').value,
     notes: document.getElementById('rec-notes').value
   });
-  ['rec-name','rec-ingredients','rec-tags','rec-method','rec-notes'].forEach(id => {
+  ['rec-name','rec-reagents','rec-tags','rec-method','rec-notes'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
   });
   renderRecipes();
@@ -3770,7 +3770,7 @@ function renderRecipes() {
           <div class="recipe-name">📜 ${escHtml(r.name)}</div>
           <button class="btn btn-red" onclick="deleteRecipe(${r.id})">✕</button>
         </div>
-        ${r.ingredients ? `<div class="recipe-detail">Ingredients: ${escHtml(r.ingredients)}</div>` : ''}
+        ${r.reagents ? `<div class="recipe-detail">Reagents: ${escHtml(r.reagents)}</div>` : ''}
         ${tags ? `<div class="item-tags" style="margin-top:4px">${tags}</div>` : ''}
         ${r.method ? `<div class="recipe-detail">Method: ${escHtml(r.method)}</div>` : ''}
         ${r.notes ? `<div class="recipe-detail italic">${escHtml(r.notes)}</div>` : ''}
@@ -3784,7 +3784,7 @@ function runAilmentFilter() {
   const tags = raw.split(',').map(t => t.trim().toUpperCase()).filter(Boolean);
   const results = document.getElementById('ailment-filter-results');
   if (!tags.length) {
-    results.innerHTML = '<div class="empty-state">Enter tags above to see matching ingredients.</div>';
+    results.innerHTML = '<div class="empty-state">Enter tags above to see matching reagents.</div>';
     return;
   }
 
@@ -3874,7 +3874,7 @@ function updateReagentRef() {
   const tbody = document.getElementById('reagent-ref-body');
   if (!tbody) return;
   if (!state.ingredients.length) {
-    tbody.innerHTML = '<tr><td colspan="7" style="color:var(--text-muted);font-style:italic;text-align:center;padding:12px">Add ingredients to see them here.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="color:var(--text-muted);font-style:italic;text-align:center;padding:12px">Add reagents to see them here.</td></tr>';
     return;
   }
   tbody.innerHTML = state.ingredients.map(ing => {
@@ -4092,7 +4092,7 @@ function forageFound() {
     if (item && !item.have) item.have = true;
   }
 
-  // Add 1 to ingredient stock (or create entry if not there yet)
+  // Add 1 to reagent stock (or create entry if not there yet)
   const existing = state.ingredients.find(i => i.name.toLowerCase() === target.toLowerCase());
   if (existing) {
     existing.qty = (existing.qty || 0) + 1;
@@ -4114,7 +4114,7 @@ function forageFound() {
     });
   }
 
-  notify(`✓ ${target} added to your ingredient stock`);
+  notify(`✓ ${target} added to your reagent stock`);
 
   updateForageBar();
   updateForageStatus();
@@ -4393,7 +4393,7 @@ function renderAll() {
 }
 
 // ════════════════════════════════════════════════════════
-//  SEED DATA — all reagents, ailments, upgrades from
+//  SEED DATA — all ingredients, ailments, upgrades from
 //  Apothecaria core + all expansion postcards
 // ════════════════════════════════════════════════════════
 const SEED_REAGENTS = [
@@ -4827,7 +4827,7 @@ function addReagentToStock(id) {
   updateReagentRef();
   renderRegComp(); // refresh highlight
   scheduleSave();
-  notify(r.name+' added to stock ✓');
+  notify(r.name+' added to reagent stock ✓');
 }
 
 // Also add an upgrades compendium to the Cottage tab
@@ -5137,7 +5137,7 @@ function seededRng(seed) {
 
 // ── Compendium render ──────────────────────────────────────
 function renderCompendium() {
-  const mode = document.getElementById('comp-mode')?.value || 'reagents';
+  const mode = document.getElementById('comp-mode')?.value || 'ingredients';
   const search = (document.getElementById('comp-search')?.value || '').toLowerCase();
   const typeFilter = document.getElementById('comp-filter-type')?.value || '';
   const sortBy = document.getElementById('comp-sort')?.value || 'name';
@@ -5148,7 +5148,7 @@ function renderCompendium() {
   // Populate filter dropdown based on mode
   const filterSel = document.getElementById('comp-filter-type');
   if (filterSel) {
-    if (mode === 'reagents') {
+    if (mode === 'ingredients') {
       filterSel.innerHTML = `<option value="">All Types</option><option>PLANT</option><option>ANIMAL</option><option>MAGIC</option>`;
     } else if (mode === 'ailments') {
       filterSel.innerHTML = `<option value="">All Tiers</option><option>Novice</option><option>Intermediate</option><option>Advanced</option><option>Expert</option>`;
@@ -5158,8 +5158,8 @@ function renderCompendium() {
   }
 
   let items = [];
-  if (mode === 'reagents') {
-    // Merge seed reagents with any custom user-added ingredients
+  if (mode === 'ingredients') {
+    // Merge seed reagents with any custom user-added reagents
     const seedNames = new Set(SEED_REAGENTS.map(r=>r.name.toLowerCase()));
     const customReagents = state.ingredients.filter(i=>!seedNames.has(i.name.toLowerCase()));
     items = [...SEED_REAGENTS, ...customReagents];
@@ -5191,7 +5191,7 @@ function renderCompendium() {
     return 0;
   });
 
-  info.textContent = `${items.length} ${mode === 'potions' ? 'potions' : mode === 'ailments' ? 'ailments' : 'reagents'} found`;
+  info.textContent = `${items.length} ${mode === 'potions' ? 'potions' : mode === 'ailments' ? 'ailments' : 'ingredients'} found`;
 
   if (!items.length) {
     grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1">Nothing found. Try a different search or filter.</div>';
@@ -5206,7 +5206,7 @@ function renderCompendium() {
           .map(t=>`<span class="tag tag-ailment">${t.trim()}</span>`).join('');
     const typeClass = item.type ? 'tag-'+item.type.toLowerCase() : (item.tier ? 'tag-'+item.tier.toLowerCase() : '');
     const typeLabel = item.type || item.tier || '';
-    const inStock = mode==='reagents' && state.ingredients.some(ing=>ing.name.toLowerCase()===item.name.toLowerCase());
+    const inStock = mode==='ingredients' && state.ingredients.some(ing=>ing.name.toLowerCase()===item.name.toLowerCase());
     const stockQty = inStock ? state.ingredients.find(ing=>ing.name.toLowerCase()===item.name.toLowerCase())?.qty||0 : 0;
     return `<div class="comp-card" onclick="openCompDetail(${i}, '${mode}')" data-idx="${i}" data-mode="${mode}">
       <div class="card-art">${svgArt}${inStock && stockQty>0 ? `<div class="card-stock-badge">×${stockQty}</div>` : ''}</div>
@@ -5273,7 +5273,7 @@ function openCompDetail(idx, mode) {
       <div class="detail-cell"><div class="detail-cell-label">Value</div><div class="detail-cell-val" style="color:var(--gold-light)">${item.value||'?'} Silver</div></div>
       <div class="detail-cell"><div class="detail-cell-label">Poison</div><div class="detail-cell-val">${(item.poison||0)>0?`<span class="tag tag-poison">☠ ${item.poison}</span>`:'—'}</div></div>
       <div class="detail-cell"><div class="detail-cell-label">Sweet</div><div class="detail-cell-val">${(item.sweet||0)>0?`<span class="tag tag-sweet">🍯 ${item.sweet}</span>`:'—'}</div></div>
-      <div class="detail-cell" style="grid-column:1/-1"><div class="detail-cell-label">Ingredients</div><div class="detail-cell-val">${escHtml(item.ingredients||'—')}</div></div>
+      <div class="detail-cell" style="grid-column:1/-1"><div class="detail-cell-label">Reagents</div><div class="detail-cell-val">${escHtml(item.reagents||'—')}</div></div>
       <div class="detail-cell" style="grid-column:1/-1"><div class="detail-cell-label">Method</div><div class="detail-cell-val">${escHtml(item.method||'—')}</div></div>
     `;
   }
@@ -5411,7 +5411,7 @@ const LOCALE_EVENTS = {
     label:'Glimmerwood Grove', icon:'🌳', color:'#4a8a4a',
     events: {
       'A': {t:"Naiad's Arms", e:"You trip fording a river and fall into the arms of a blushing naiad. They help you to the other side. Write about your relationship with this river-bound naiad each time this appears.", m:[]},
-      '2': {t:"Fairy Theft!", e:"A group of thieving fairies grab your forage basket and take off into the woods. They drop one ingredient. Choose one to keep, discard the rest.", m:['⚠ Lose all but 1 collected reagent']},
+      '2': {t:"Fairy Theft!", e:"A group of thieving fairies grab your forage basket and take off into the woods. They drop one reagent. Choose one to keep, discard the rest.", m:['⚠ Lose all but 1 collected reagent']},
       '3': {t:"Boar Tracks", e:"Boar tracks lead straight to a reagent! Draw another card and treat it as a PLANT of the same value.", m:['✦ Gain: PLANT reagent equal to next card value']},
       '4': {t:"Truffle Hunter", e:"A jealous truffle hunter mistakes you for a competitor and takes a pot shot at you. It hits. You must take time to heal the wound.", m:['⏳ Decrease Timer by 1', '⚠ You have been wounded']},
       '5': {t:"Friendly Druid", e:"A druid tending the forest tells you the location of a reagent. Draw a card and treat it as a PLANT of the same value. Write about your relationship with this forest caretaker.", m:['✦ Gain: PLANT reagent equal to next card value']},
@@ -5490,7 +5490,7 @@ const LOCALE_EVENTS = {
       '6': {t:"The Chute", e:"The ground gives way, dropping you into a smooth stone chute and into a cell in the dungeon depths. The lock isn't too hard to pick. Describe your escape.", m:['⏳ Decrease Timer by 1']},
       '7': {t:"Skeleton Guard", e:"You round a corner and come face-to-face with a skeleton in ancient armour. It raises its rusty sword. It has clearly been here a very long time and looks confused about the whole situation. How do you resolve this?", m:[]},
       '8': {t:"The Keeper's Room", e:"You find an ancient, ornate room that must have belonged to a Keeper of old. Portraits line the walls. Who do they depict? What happened to them? Is there anything left to find here?", m:[]},
-      '9': {t:"Adventurers!", e:"You catch up with a group of adventurers who are hopelessly lost. They look very relieved to see you. You can guide them out OR let them carry your reagents, sparing your back. Either way, you earn their gratitude.", m:['✦ Gain 20 Silver if you guide them out']},
+      '9': {t:"Adventurers!", e:"You catch up with a group of adventurers who are hopelessly lost. They look very relieved to see you. You can guide them out OR let them carry your ingredients, sparing your back. Either way, you earn their gratitude.", m:['✦ Gain 20 Silver if you guide them out']},
       '10': {t:"Magic Door", e:"A door in the dungeon wall is glowing faintly with runes. You can feel the magic radiating from it. It will open for the right person. Do you try? What's on the other side?", m:[]},
       'J': {t:"The Dungeon Market", e:"Deep in the hollow you find a bustling little market run by goblins, imps, and other small creatures. They're selling all manner of strange things. You can buy or trade here.", m:['✦ May purchase a Dungeon reagent (value ≤8) for 20 Silver']},
       'Q': {t:"The Old Adventurer", e:"You find an old adventurer who has been living in the dungeon for years, having forgotten the way out. They are well-adjusted and quite content. They tell you about the dungeon's layout and share some advice.", m:['✦ Gain 2 Foraging Points from their knowledge']},
@@ -6261,6 +6261,8 @@ window.renderAll = function() {
 
   // Run full render
   renderAll();
+  // Status is default tab — hide HUD initially
+  document.getElementById('hud-bar').style.display = 'none';
 
   // Tab activation hooks
   const _origShowTab2 = window.showTab || showTab;
@@ -6269,7 +6271,8 @@ window.renderAll = function() {
     if (id === 'compendium') renderCompendium();
     if (id === 'cards')      renderQuickRef(drawMode);
     if (id === 'forage')     { renderEventTracker(); renderSeasonPills(); renderForageTabShoppingList(); }
-    if (id === 'status')     renderStatus();
+    if (id === 'status')     { renderStatus(); document.getElementById('hud-bar').style.display = 'none'; }
+    else                     { document.getElementById('hud-bar').style.display = ''; }
     if (id === 'potions')    { if (state.patient || (state.shoppingList||[]).some(i=>i.have)) showPotionAutofill(); }
   };
 
@@ -6805,7 +6808,7 @@ function showPotionAutofill() {
 
   let lines = [];
   if (p) lines.push(`<strong style="color:var(--parchment)">Patient:</strong> ${escHtml(p.name)}${p.ailment ? ' · ' + escHtml(p.ailment) : ''}`);
-  if (sl.length) lines.push(`<strong style="color:var(--parchment)">Ingredients:</strong> ${sl.map(i => escHtml(i.name)).join(', ')}`);
+  if (sl.length) lines.push(`<strong style="color:var(--parchment)">Reagents:</strong> ${sl.map(i => escHtml(i.name)).join(', ')}`);
   if (!p && !sl.length) lines.push('No active patient or collected reagents found.');
 
   summary.innerHTML = lines.join('<br>');
@@ -6816,12 +6819,12 @@ function showPotionAutofill() {
 function autofillPotionForm() {
   const p = state.patient;
 
-  // Ingredients: collected items from shopping list
+  // Reagents: collected items from shopping list
   const collected = (state.shoppingList || []).filter(i => i.have ||
     (state.ingredients.find(r => r.name.toLowerCase() === i.name.toLowerCase())?.qty || 0) >= (i.qty || 1));
 
   if (collected.length) {
-    document.getElementById('pot-ingredients').value = collected.map(i => i.name).join(', ');
+    document.getElementById('pot-reagents').value = collected.map(i => i.name).join(', ');
   }
 
   // Patient data
@@ -6836,7 +6839,7 @@ function autofillPotionForm() {
     }
   }
 
-  // Calculate total poison from collected ingredients
+  // Calculate total poison from collected reagents
   const totalPoison = collected.reduce((sum, item) => {
     const reagent = [...SEED_REAGENTS, ...state.ingredients]
       .find(r => r.name.toLowerCase() === item.name.toLowerCase());
@@ -6856,7 +6859,7 @@ function autofillPotionForm() {
     document.getElementById('pot-sweet').value = totalSweet;
   }
 
-  // Auto prep method from ingredients
+  // Auto prep method from reagents
   const preps = collected
     .map(item => {
       const reagent = [...SEED_REAGENTS, ...state.ingredients]
